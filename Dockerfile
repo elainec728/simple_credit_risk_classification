@@ -23,6 +23,7 @@ RUN pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host=mirrors
 
 ENV ENV_FOR_DYNACONF=dev
 COPY * $CONTAINER_HOME
+ADD osdemo $CONTAINER_HOME
 WORKDIR $CONTAINER_HOME/osdemo
 #CMD ['tail','-f','/etc/hosts']
 CMD ["sh","-c","sh $CONTAINER_HOME/main.sh $CONTAINER_HOME"]
