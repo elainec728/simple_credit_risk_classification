@@ -2,11 +2,11 @@
 FROM python:3.6
 USER root
 # Set variables for project name, and where to place files in container.
-ENV CONTAINER_HOME=/credit \
+ENV CONTAINER_HOME=/credit/ \
     PROJECT=credit \
     TZ=Asia/Shanghai \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH="${PYTHONPATH}:/credit" \
+    PYTHONPATH="${PYTHONPATH}:/credit/" \
     PROJECT_ENV='dev' \
     DJANGO_SETTINGS_MODULE=osdemo.OSdemo_django.settings
 
