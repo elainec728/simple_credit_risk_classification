@@ -23,7 +23,7 @@ def scoring(payload_scoring, model, X_prs, y_prs):
     if isinstance(js,str):
         js=js.replace('\'','\",')
         js=json.loads(js)
-    fields = js.get('fields', []) + ["prediction", "probability"]
+    fields = js.get('fields', []) + ["PREDICTION", "PROBABILITY"]
     X_test = np.array(js.get('values', []))
     # X_test_processed = np.empty((X_test.shape[0], X_test.shape[1] - 1))
     X_test_processed = []
@@ -41,8 +41,6 @@ def scoring(payload_scoring, model, X_prs, y_prs):
     values = [list(X_test[i, :].reshape((-1))) +
               list(y_prs.inverse_transform(y_pred[i].reshape((-1)))) +
               [list(y_prob[i, :])] for i in range(len(X_test))]
-    for i in range(len(fields)):
-        fields[i]=fields[i].upper()
     return {"fields": fields,
             "labels": list(y_prs.classes_.reshape((-1))),
             "values": values}
@@ -56,8 +54,8 @@ def training(X_train, y_train):
 
 
 def preprocess(df):
-    preprocess_config = {'LoanDuration': KBinsDiscretizer(n_bins=5, encode='ordinal'), 'LoanAmount': MinMaxScaler(),
-                         'Age': KBinsDiscretizer(n_bins=5, encode='ordinal')}
+    preprocess_config = {'LOANDURATION': KBinsDiscretizer(n_bins=5, encode='ordinal'), 'LOANAMOUNT': MinMaxScaler(),
+                         'AGE': KBinsDiscretizer(n_bins=5, encode='ordinal')}
     preprocessors = []
     columns = df.columns.tolist()[:-1]
     X_train = []
@@ -83,7 +81,7 @@ def get_scoring_payload(df, no_of_records_to_score=1):
 
 
 if __name__ == '__main__':
-    label_column = "Risk"
+    label_column = "RISK"
     model_type = "binary"
 
     data_df = pd.read_csv(file_path)
@@ -106,10 +104,10 @@ if __name__ == '__main__':
         pickle.dump(r, f)
 
     sample_test_payload = {
-        'fields': ['CheckingStatus', 'LoanDuration', 'CreditHistory', 'LoanPurpose', 'LoanAmount', 'ExistingSavings',
-                   'EmploymentDuration', 'InstallmentPercent', 'Sex', 'OthersOnLoan', 'CurrentResidenceDuration',
-                   'OwnsProperty', 'Age', 'InstallmentPlans', 'Housing', 'ExistingCreditsCount', 'Job', 'Dependents',
-                   'Telephone', 'ForeignWorker'], 'values': [
+        'fields': ['CHECKINGSTATUS', 'LOANDURATION', 'CREDITHISTORY', 'LOANPURPOSE', 'LOANAMOUNT',
+                       'EXISTINGSAVINGS', 'EMPLOYMENTDURATION', 'INSTALLMENTPERCENT', 'SEX', 'OTHERSONLOAN',
+                       'CURRENTRESIDENCEDURATION', 'OWNSPROPERTY', 'AGE', 'INSTALLMENTPLANS', 'HOUSING',
+                       'EXISTINGCREDITSCOUNT', 'JOB', 'DEPENDENTS', 'TELEPHONE', 'FOREIGNWORKER'], 'values': [
             ['0_to_200', 31, 'credits_paid_to_date', 'other', 1889, '100_to_500', 'less_1', 3, 'female', 'none', 3,
              'savings_insurance', 32, 'none', 'own', 1, 'skilled', 1, 'none', 'yes'],
             ['less_0', 18, 'credits_paid_to_date', 'car_new', 462, 'less_100', '1_to_4', 2, 'female', 'none', 2,
