@@ -26,8 +26,8 @@ def scoring_service(request):
         with open(MODEL_PATH, 'rb') as f:
             res = pickle.load(f)
         print('before scoring')
-        res = scoring(payload_scoring, *res)
-        context = res
+        result = scoring(payload_scoring, *res)
+        context = result
     except Exception as e:
         print(e)
         context = {
