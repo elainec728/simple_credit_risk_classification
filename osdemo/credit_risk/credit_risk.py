@@ -28,7 +28,7 @@ def scoring(payload_scoring, model, X_prs, y_prs):
     X_test_processed = []
 
     X_test_right_format=[[] for i in range(X_test.shape[0])]
-    for i in range(X_test.shape[1] - 1):
+    for i in range(X_test.shape[1]):
         if isinstance(X_prs[i], LabelEncoder):
             x = X_prs[i].transform(X_test[:, i].astype(str).reshape((-1, 1)))
             X_test_processed.append(list(x.reshape((-1,))))
@@ -62,7 +62,7 @@ def preprocess(df):
                          'CURRENTRESIDENCEDURATION': MinMaxScaler(), 'EXISTINGCREDITSCOUNT': MinMaxScaler(),
                          'DEPENDENTS': MinMaxScaler()}
     preprocessors = []
-    columns = df.columns.tolist()[:-1]
+    columns = df.columns.tolist()
     X_train = []
 
     for i in range(len(columns)):
