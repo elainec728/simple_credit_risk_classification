@@ -41,6 +41,8 @@ def scoring(payload_scoring, model, X_prs, y_prs):
     values = [list(X_test[i, :].reshape((-1))) +
               list(y_prs.inverse_transform(y_pred[i].reshape((-1)))) +
               [list(y_prob[i, :])] for i in range(len(X_test))]
+    for i in range(len(fields)):
+        fields[i]=fields[i].upper()
     return {"fields": fields,
             "labels": list(y_prs.classes_.reshape((-1))),
             "values": values}
